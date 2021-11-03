@@ -23,16 +23,18 @@
 {% block title %}Main{% endblock %}
 
 {% block content %}
-    {% if posts %}
-        {% for post in posts %}
-            <p>{{ post.title }}</p>
-            <img src="{{ post.image.url }}" width="400px" height="auto">
-            <p>{{ post.body }}</p>
-            <p>{{ post.author }}, {{ post.created }}</p>
-        {% endfor %}
-    {% else %}
-        <p>no posts yet!</p>
-    {% endif %}
+    <div style="max-width: 400px; margin: 2rem auto">
+        {% if posts %}
+            {% for post in posts %}
+                <a href="{% url 'post_detail' post.pk %}"><p>{{ post.title }}</p></a>
+                <img src="{{ post.image.url }}" width="400px" height="auto">
+                <p>{{ post.body }}</p>
+                <p>{{ post.author }}, {{ post.created }}</p>
+            {% endfor %}
+        {% else %}
+            <p>no posts yet!</p>
+        {% endif %}
+    </div>
 {% endblock %}
 
 

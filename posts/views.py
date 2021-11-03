@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
-from .forms import PostForm, PostEditForm, CommentForm
+from .forms import PostForm, PostEditForm, CommentForm, SearchForm
 from .models import Post, Comment
 
 
@@ -75,5 +76,33 @@ def delete_post(request, pk):
         post.delete()
         return redirect('post_list')
     return render(request, 'delete.html', locals())
+
+
+def search(request):
+    posts = Post.objects.all()
+    if request.POST:
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            target = form.data['search']
+            print(target)
+            p = Post.objects.filter(
+                    Q(title__icontains=target) | Q(body__icontains=target)
+                )
+            return render(request, 'search_results.html', {'p': p})
+    else:
+        form = SearchForm()
+    return render(request, 'list.html', locals())
+
+
+# def search(request):
+#     target = ''
+#     form = SearchForm()
+#     if request.POST:
+#         form = SearchForm(request.POST)
+#         if form.is_valid():
+#             target = form.data['search']
+#     # posts = Post.objects.filter(title__icontains=target)
+#
+#     return render(request, 'search_results.html', locals())
 
 

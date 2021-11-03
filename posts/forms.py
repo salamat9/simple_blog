@@ -24,3 +24,7 @@ class PostEditForm(forms.ModelForm):
 
 class CommentForm(forms.Form):
     body = forms.CharField()
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField()
